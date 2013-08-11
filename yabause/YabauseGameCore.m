@@ -30,11 +30,9 @@
 #import "OESaturnSystemResponderClient.h"
 #import <OpenGL/gl.h>
 
-
 #include <sched.h>
 #include <stdio.h>
 #include <stdlib.h>
-
 #include "vdp1.h"
 #include "vdp2.h"
 //#include "scsp.h"
@@ -42,10 +40,8 @@
 #include "cdbase.h"
 #include "yabause.h"
 #include "yui.h"
-
 //#include "m68kc68k.h"
 #include "cs0.h"
-
 #include "m68kcore.h"
 #include "permacjoy.h"
 #include "vidogl.h"
@@ -53,19 +49,25 @@
 
 // ToDo: Fix
 #define SAMPLERATE 44100
-#define SAMPLEFRAME 735
+#define SAMPLEFRAME SAMPLERATE / 60
 
+#define HIRES_WIDTH     356
+#define HIRES_HEIGHT    256
 
-#pragma mark -
-#pragma mark OpenEmu SNDCORE for Yabause
+u32 *videoBuffer = NULL;
+
+int width;
+int height;
+
+yabauseinit_struct yinit;
+static PerPad_struct *c1, *c2 = NULL;
+BOOL firstRun = YES;
 
 // Global variables because the callbacks need to access them...
 static OERingBuffer *ringBuffer;
 
-
-//////////////////////////////////////////////////////////////////////////////
-// OE SNDCORE
-//////////////////////////////////////////////////////////////////////////////
+#pragma mark -
+#pragma mark OpenEmu SNDCORE for Yabause
 
 #ifndef SNDOE_H
 #define SNDOE_H
@@ -73,19 +75,6 @@ static OERingBuffer *ringBuffer;
 #endif
 
 #define BUFFER_LEN 65536
-
-/*
-static int SNDOEInit(void);
-static void SNDOEDeInit(void);
-static int SNDOEReset(void);
-static int SNDOEChangeVideoFormat(int vertfreq);
-static void SNDOEUpdateAudio(u32 *leftchanbuffer, u32 *rightchanbuffer, u32 num_samples);
-static u32 SNDOEGetAudioSpace(void);
-static void SNDOEMuteAudio(void);
-static void SNDOEUnMuteAudio(void);
-static void SNDOESetVolume(int volume);
-*/
-
 
 static int SNDOEInit(void)
 {
@@ -173,12 +162,8 @@ SoundInterface_struct SNDOE = {
 };
 
 #pragma mark -
-#pragma mark Stuff
+#pragma mark Yabause Structs
 
-////////
-
-
-// from Cocoa port main.m
 M68K_struct *M68KCoreList[] = {
     &M68KDummy,
     &M68KC68K,
@@ -219,39 +204,8 @@ VideoInterface_struct *VIDCoreList[] = {
     NULL
 };
 
-
-// Resolution - This is the maximum resolution our video buffer will ever have
-#define HIRES_WIDTH     356
-#define HIRES_HEIGHT    256
-
-u32 *videoBuffer = NULL;
-
-
-int width;
-int height;
-
-void updateCurrentResolution(void)
-{
-    int current_width = HIRES_WIDTH;
-    int current_height = HIRES_HEIGHT;
-
-    // Test if VIDCore valid AND NOT the Dummy Interface (or at least VIDCore->id != 0). 
-    // Avoid calling GetGlSize if Dummy/id=0 is selected
-    if (VIDCore && VIDCore->id) 
-    {
-        VIDCore->GetGlSize(&current_width,&current_height);
-    }
-	
-    width = current_width;
-    height = current_height;
-}
-
-yabauseinit_struct yinit;
-static PerPad_struct *c1, *c2 = NULL;
-BOOL firstRun = YES;
-
-
-// OE Core Implementation
+#pragma mark -
+#pragma mark OE Core Implementation
 
 @interface YabauseGameCore () <OESaturnSystemResponderClient>
 {
@@ -265,83 +219,69 @@ BOOL firstRun = YES;
 
 @implementation YabauseGameCore
 
-- (void)resetEmulation
-{
-    DLog(@"Yabause resetEmulation");
-    firstRun = YES;
-    YabauseResetButton();
-}
-
-- (void)stopEmulation
-{
-    DLog(@"Yabause stopEmulation");
-    firstRun = YES;
-    [super stopEmulation];
-}
-
 - (id)init
 {
     DLog(@"Yabause init /debug");
     self = [super init];
     if(self != nil)
-    {   
+    {
         filename = [[NSString alloc] init];
-        videoLock = [[NSLock alloc] init];
+        //videoLock = [[NSLock alloc] init];
         videoBuffer = (u32 *)calloc(sizeof(u32), HIRES_WIDTH * HIRES_HEIGHT);
         ringBuffer = [self ringBufferAtIndex:0];
     }
     return self;
 }
 
+- (void)setupEmulation
+{
+    width = HIRES_WIDTH;
+    height = HIRES_HEIGHT;
+    
+    PerPortReset();
+    c1 = PerPadAdd(&PORTDATA1);
+    c2 = PerPadAdd(&PORTDATA2);
+}
+
+- (void)resetEmulation
+{
+    firstRun = YES;
+    YabauseResetButton();
+}
+
+- (void)stopEmulation
+{
+    firstRun = YES;
+    [super stopEmulation];
+}
+
 - (void)dealloc
 {
-    DLog(@"Yabause dealloc");
     YabauseDeInit();
     free(videoBuffer);
     [videoLock release];
     [super dealloc];
 }
 
-- (void)setupEmulation
-{
-    DLog(@"Yabause setupEmulation");
-    
-    width = HIRES_WIDTH;
-    height = HIRES_HEIGHT;
-
-    //PerPad Init
-    PerPortReset();
-    c1 = PerPadAdd(&PORTDATA1);
-    c2 = PerPadAdd(&PORTDATA2);
-}
-
 - (void)initYabauseWithCDCore:(int)cdcore
 {
-    
     if ([filename hasSuffix:@".cue"])
     {
-    
         yinit.cdcoretype = CDCORE_ISO;
         yinit.cdpath = [filename UTF8String];
         
         // Get a BIOS
-		NSString *bios = [[[[[NSHomeDirectory() stringByAppendingPathComponent:@"Library"]
-									  stringByAppendingPathComponent:@"Application Support"]
-									 stringByAppendingPathComponent:@"OpenEmu"]
-									 stringByAppendingPathComponent:@"BIOS"] stringByAppendingPathComponent:@"Saturn EU.bin"];
-        
+		NSString *bios = [[self biosDirectoryPath] stringByAppendingPathComponent:@"Saturn EU.bin"];
         
         // If a "Saturn EU.bin" BIOS exists, use it otherwise emulate BIOS
         if ([[NSFileManager defaultManager] fileExistsAtPath:bios])
-            // Use real BIOS
             yinit.biospath = [bios UTF8String];
         else
-            // Emulate BIOS
             yinit.biospath = NULL;
     }
     else
     {
-        // Assume we've a BIOS file
+        // Assume we've a BIOS file and we want to run it
         yinit.cdcoretype = CDCORE_DUMMY;
         yinit.biospath = [filename UTF8String];
     }
@@ -360,7 +300,6 @@ BOOL firstRun = YES;
     yinit.carttype = CART_DRAM32MBIT; //4MB RAM Expansion Cart
     yinit.regionid = REGION_AUTODETECT;
     
-
     // Take care of the Battery Save file to make Save State happy
     NSString *path = filename;
     NSString *extensionlessFilename = [[path lastPathComponent] stringByDeletingPathExtension];
@@ -370,10 +309,7 @@ BOOL firstRun = YES;
     if([batterySavesDirectory length] != 0)
     {
         [[NSFileManager defaultManager] createDirectoryAtPath:batterySavesDirectory withIntermediateDirectories:YES attributes:nil error:NULL];
-        
         NSString *filePath = [batterySavesDirectory stringByAppendingPathComponent:[extensionlessFilename stringByAppendingPathExtension:@"sav"]];
-        
-        //yinit.buppath = [filePath UTF8String];
         
         if([filePath length] > 0) {
             DLog(@"BRAM: %@", filePath);
@@ -420,12 +356,6 @@ BOOL firstRun = YES;
     return videoBuffer;
 }
 
-#pragma mark -
-#pragma mark WORKING
-#pragma mark -
-
-#pragma mark OE Methods
-
 - (BOOL)loadFileAtPath:(NSString*)path
 {
     filename = [path copy];
@@ -433,6 +363,7 @@ BOOL firstRun = YES;
     return YES;
 }
 
+// Save State is broken, fail more often than not
 - (BOOL)saveStateToFileAtPath: (NSString *) fileName
 {
     ScspMuteAudio(SCSP_MUTE_SYSTEM);
@@ -456,6 +387,9 @@ BOOL firstRun = YES;
     
     return NO;
 }
+
+#pragma mark -
+#pragma mark Inputs
 
 - (oneway void)didPushSaturnButton:(OESaturnButton)button forPlayer:(NSUInteger)player
 {
@@ -571,13 +505,14 @@ BOOL firstRun = YES;
         firstRun = NO;
     }
     else {
-        [videoLock lock];
+        //[videoLock lock];
         ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
         YabauseExec();
         ScspMuteAudio(SCSP_MUTE_SYSTEM);
-        [videoLock unlock];
+        //[videoLock unlock];
     }
 }
+
 - (GLenum)pixelFormat
 {
     return GL_RGBA;
@@ -608,6 +543,7 @@ BOOL firstRun = YES;
     return 1;
 }
 
+#pragma mark -
 #pragma mark Yabause Callbacks
 
 void YuiErrorMsg(const char *string)
@@ -630,6 +566,24 @@ void YuiSwapBuffers(void)
 {
     updateCurrentResolution();
     memcpy(videoBuffer, dispbuffer, sizeof(u32) * width * height);
+}
+
+#pragma mark -
+#pragma mark Helpers
+
+void updateCurrentResolution(void)
+{
+    int current_width = HIRES_WIDTH;
+    int current_height = HIRES_HEIGHT;
+    
+    // Avoid calling GetGlSize if Dummy/id=0 is selected
+    if (VIDCore && VIDCore->id)
+    {
+        VIDCore->GetGlSize(&current_width,&current_height);
+    }
+	
+    width = current_width;
+    height = current_height;
 }
 
 @end
