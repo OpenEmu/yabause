@@ -38,6 +38,7 @@
 		946C18B11714A07B00C64BF9 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946C18B01714A07B00C64BF9 /* OpenEmuBase.framework */; };
 		946C18DE1714A4AA00C64BF9 /* gen68k.c in Sources */ = {isa = PBXBuildFile; fileRef = EB789355152A32B90080990B /* gen68k.c */; };
 		EB1BA9B61587923900F8939D /* osdcore.c in Sources */ = {isa = PBXBuildFile; fileRef = EB1BA9B51587923900F8939D /* osdcore.c */; };
+		EB30D2E017B7B2CE00A8100A /* OESaturnSystemResponderClient.h in Resources */ = {isa = PBXBuildFile; fileRef = EB30D2DF17B7B2CE00A8100A /* OESaturnSystemResponderClient.h */; };
 		EB3297141522671200307B0C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB3297131522671200307B0C /* Cocoa.framework */; };
 		EB32971E1522671200307B0C /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = EB32971C1522671200307B0C /* InfoPlist.strings */; };
 		EB78914F152A08600080990B /* Yabause.icns in Resources */ = {isa = PBXBuildFile; fileRef = EB78914E152A08600080990B /* Yabause.icns */; };
@@ -95,7 +96,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		946C18E01714A54E00C64BF9 /* PBXContainerItemProxy */ = {
+		EB30D2D917B7A96F00A8100A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = EB3297071522671200307B0C /* Project object */;
 			proxyType = 1;
@@ -131,11 +132,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		946C18B01714A07B00C64BF9 /* OpenEmuBase.framework */ = {isa = PBXFileReference; lastKnownFileType = file; name = OpenEmuBase.framework; path = "../../OpenEmu/OpenEmu-SDK/build/Release/OpenEmuBase.framework"; sourceTree = "<group>"; };
+		946C18B01714A07B00C64BF9 /* OpenEmuBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenEmuBase.framework; path = "../../OpenEmu/OpenEmu-SDK/build/Release/OpenEmuBase.framework"; sourceTree = "<group>"; };
 		946C18BB1714A3CA00C64BF9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		946C18D51714A48600C64BF9 /* gen68k */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gen68k; sourceTree = BUILT_PRODUCTS_DIR; };
-		946C18E21714A62D00C64BF9 /* OESaturnSystemResponderClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OESaturnSystemResponderClient.h; path = ../../OpenEmu/OpenEmu/Saturn/OESaturnSystemResponderClient.h; sourceTree = "<group>"; };
 		EB1BA9B51587923900F8939D /* osdcore.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = osdcore.c; sourceTree = "<group>"; };
+		EB30D2DF17B7B2CE00A8100A /* OESaturnSystemResponderClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = OESaturnSystemResponderClient.h; path = ../../OpenEmu/Saturn/OESaturnSystemResponderClient.h; sourceTree = "<group>"; };
 		EB3297101522671200307B0C /* Yabause.oecoreplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Yabause.oecoreplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB3297131522671200307B0C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		EB3297161522671200307B0C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -367,7 +368,7 @@
 		EB3297251522676200307B0C /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				946C18E21714A62D00C64BF9 /* OESaturnSystemResponderClient.h */,
+				EB30D2DF17B7B2CE00A8100A /* OESaturnSystemResponderClient.h */,
 				EB851D0B152396CC00715BD2 /* YabauseGameCore.h */,
 				EB851D0C152396CC00715BD2 /* YabauseGameCore.m */,
 			);
@@ -599,7 +600,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				946C18E11714A54E00C64BF9 /* PBXTargetDependency */,
+				EB30D2DA17B7A96F00A8100A /* PBXTargetDependency */,
 			);
 			name = Yabause;
 			productName = Yabause;
@@ -641,6 +642,7 @@
 			files = (
 				EB32971E1522671200307B0C /* InfoPlist.strings in Resources */,
 				EB78914F152A08600080990B /* Yabause.icns in Resources */,
+				EB30D2E017B7B2CE00A8100A /* OESaturnSystemResponderClient.h in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -653,17 +655,9 @@
 			files = (
 			);
 			inputPaths = (
-				"$(PROJECT_DIR)/src/gen68k/gen68k.c",
-				"$(PROJECT_DIR)/src/gen68k/gen68k.h",
-				"$(PROJECT_DIR)/src/gen68k/gen68k.inc",
-				"$(PROJECT_DIR)/src/gen68k/c68kmac.inc",
-				"$(PROJECT_DIR)/src/gen68k/c68kexec.c",
-				"$(PROJECT_DIR)/src/gen68k/c68k.c",
-				"$(PROJECT_DIR)/src/gen68k/c68k.h",
 			);
 			name = "Run Script";
 			outputPaths = (
-				"$(PROJECT_DIR)/src/gen68k/c68k_op0.inc",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -762,10 +756,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		946C18E11714A54E00C64BF9 /* PBXTargetDependency */ = {
+		EB30D2DA17B7A96F00A8100A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 946C18D41714A48600C64BF9 /* gen68k */;
-			targetProxy = 946C18E01714A54E00C64BF9 /* PBXContainerItemProxy */;
+			targetProxy = EB30D2D917B7A96F00A8100A /* PBXContainerItemProxy */;
 		};
 		EB851D191523ABCE00715BD2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -806,6 +800,7 @@
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
+					C68K_GEN,
 					"$(inherited)",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
@@ -1072,6 +1067,7 @@
 				946C18DD1714A48600C64BF9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		EB32970A1522671200307B0C /* Build configuration list for PBXProject "Yabause" */ = {
 			isa = XCConfigurationList;
