@@ -37,6 +37,7 @@
 /* Begin PBXBuildFile section */
 		946C18B11714A07B00C64BF9 /* OpenEmuBase.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 946C18B01714A07B00C64BF9 /* OpenEmuBase.framework */; };
 		946C18DE1714A4AA00C64BF9 /* gen68k.c in Sources */ = {isa = PBXBuildFile; fileRef = EB789355152A32B90080990B /* gen68k.c */; };
+		946CA3BD18495D3400CCA369 /* japmodem.c in Sources */ = {isa = PBXBuildFile; fileRef = 946CA3BB18495D3400CCA369 /* japmodem.c */; };
 		EB1BA9B61587923900F8939D /* osdcore.c in Sources */ = {isa = PBXBuildFile; fileRef = EB1BA9B51587923900F8939D /* osdcore.c */; };
 		EB30D2E017B7B2CE00A8100A /* OESaturnSystemResponderClient.h in Resources */ = {isa = PBXBuildFile; fileRef = EB30D2DF17B7B2CE00A8100A /* OESaturnSystemResponderClient.h */; };
 		EB3297141522671200307B0C /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EB3297131522671200307B0C /* Cocoa.framework */; };
@@ -135,8 +136,10 @@
 		946C18B01714A07B00C64BF9 /* OpenEmuBase.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenEmuBase.framework; path = "../../OpenEmu/OpenEmu-SDK/build/Release/OpenEmuBase.framework"; sourceTree = "<group>"; };
 		946C18BB1714A3CA00C64BF9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		946C18D51714A48600C64BF9 /* gen68k */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = gen68k; sourceTree = BUILT_PRODUCTS_DIR; };
+		946CA3BB18495D3400CCA369 /* japmodem.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = japmodem.c; sourceTree = "<group>"; };
+		946CA3BC18495D3400CCA369 /* japmodem.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = japmodem.h; sourceTree = "<group>"; };
 		EB1BA9B51587923900F8939D /* osdcore.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = osdcore.c; sourceTree = "<group>"; };
-		EB30D2DF17B7B2CE00A8100A /* OESaturnSystemResponderClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file; name = OESaturnSystemResponderClient.h; path = ../../OpenEmu/Saturn/OESaturnSystemResponderClient.h; sourceTree = "<group>"; };
+		EB30D2DF17B7B2CE00A8100A /* OESaturnSystemResponderClient.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = OESaturnSystemResponderClient.h; path = ../../OpenEmu/Saturn/OESaturnSystemResponderClient.h; sourceTree = "<group>"; };
 		EB3297101522671200307B0C /* Yabause.oecoreplugin */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Yabause.oecoreplugin; sourceTree = BUILT_PRODUCTS_DIR; };
 		EB3297131522671200307B0C /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		EB3297161522671200307B0C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -404,6 +407,8 @@
 				EB78936C152A32B90080990B /* debug.h */,
 				EB78936D152A32B90080990B /* error.c */,
 				EB78936E152A32B90080990B /* error.h */,
+				946CA3BB18495D3400CCA369 /* japmodem.c */,
+				946CA3BC18495D3400CCA369 /* japmodem.h */,
 				EB78936F152A32B90080990B /* m68kc68k.c */,
 				EB789370152A32B90080990B /* m68kc68k.h */,
 				EB789371152A32B90080990B /* m68kcore.c */,
@@ -750,6 +755,7 @@
 				EBDBB53D152A39DC0091DA28 /* yabause.c in Sources */,
 				EBDBB53E152A39DC0091DA28 /* ygl.c in Sources */,
 				EBDBB53F152A39DC0091DA28 /* yglshader.c in Sources */,
+				946CA3BD18495D3400CCA369 /* japmodem.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
