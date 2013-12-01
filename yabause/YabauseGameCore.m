@@ -334,6 +334,7 @@ VideoInterface_struct *VIDCoreList[] = {
 {
     YabauseInit(&yinit);
     YabauseSetDecilineMode(1);
+    OSDChangeCore(OSDCORE_DUMMY);
 }
 
 - (NSUInteger)soundBufferSize
