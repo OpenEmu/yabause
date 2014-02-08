@@ -357,7 +357,7 @@ VideoInterface_struct *VIDCoreList[] = {
     return videoBuffer;
 }
 
-- (BOOL)loadFileAtPath:(NSString*)path
+- (BOOL)loadFileAtPath:(NSString *)path error:(NSError **)error
 {
     filename = [path copy];
 	DLog(@"Saturn - %@", filename);
