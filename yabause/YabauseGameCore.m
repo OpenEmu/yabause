@@ -337,11 +337,6 @@ VideoInterface_struct *VIDCoreList[] = {
     OSDChangeCore(OSDCORE_DUMMY);
 }
 
-- (NSUInteger)soundBufferSize
-{
-    return BUFFER_LEN;
-}
-
 - (OEIntSize)bufferSize
 {
     return OEIntSizeMake(width, height);
@@ -529,19 +524,14 @@ VideoInterface_struct *VIDCoreList[] = {
     return GL_UNSIGNED_BYTE;
 }
 
-- (double)audioSampleRateForBuffer:(NSUInteger)buffer;
+- (double)audioSampleRate
 {
     return SAMPLERATE;
 }
 
-- (NSUInteger)channelCountForBuffer:(NSUInteger)buffer;
+- (NSUInteger)channelCount
 {
     return 2;
-}
-
-- (NSUInteger)audioBufferCount;
-{
-    return 1;
 }
 
 #pragma mark -
@@ -550,17 +540,6 @@ VideoInterface_struct *VIDCoreList[] = {
 void YuiErrorMsg(const char *string)
 {
     DLog(@"Yabause Error %@", [NSString stringWithUTF8String:string]);
-}
-
-void YuiSetVideoAttribute(int type, int val)
-{
-    DLog(@"Yabause called back to YuiSetVideoAttribute");
-}
-
-int YuiSetVideoMode(int width, int height, int bpp, int fullscreen)
-{
-    DLog(@"Yabause called, it want to set width of %d and height of %d",width,height);
-    return 0;
 }
 
 void YuiSwapBuffers(void) 
