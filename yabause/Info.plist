@@ -24,6 +24,16 @@
 	<string>OEGameCoreController</string>
 	<key>OEGameCoreClass</key>
 	<string>YabauseGameCore</string>
+	<key>OEGameCoreOptions</key>
+	<dict>
+		<key>openemu.system.saturn</key>
+		<dict>
+			<key>OEGameCoreHasGlitches</key>
+			<true/>
+			<key>OEGameCoreSaveStatesNotSupported</key>
+			<true/>
+		</dict>
+	</dict>
 	<key>OEGameCorePlayerCount</key>
 	<string>2</string>
 	<key>OEProjectURL</key>
