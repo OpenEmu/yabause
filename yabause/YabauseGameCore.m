@@ -362,25 +362,25 @@ VideoInterface_struct *VIDCoreList[] = {
 // Save State is broken, fail more often than not
 - (BOOL)saveStateToFileAtPath: (NSString *) fileName
 {
-    ScspMuteAudio(SCSP_MUTE_SYSTEM);
-    int error = YabSaveState([fileName UTF8String]);
-    ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
-    
-    if (!error)
-        return YES;
-    
+//    ScspMuteAudio(SCSP_MUTE_SYSTEM);
+//    int error = YabSaveState([fileName UTF8String]);
+//    ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
+//    
+//    if (!error)
+//        return YES;
+//    
     return NO;
 }
 
 - (BOOL)loadStateFromFileAtPath: (NSString *) fileName
 {
-    ScspMuteAudio(SCSP_MUTE_SYSTEM);
-    int error = YabLoadState([fileName UTF8String]);
-    ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
-    
-    if (!error)
-        return YES;
-    
+//    ScspMuteAudio(SCSP_MUTE_SYSTEM);
+//    int error = YabLoadState([fileName UTF8String]);
+//    ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
+//    
+//    if (!error)
+//        return YES;
+//    
     return NO;
 }
 
