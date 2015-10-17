@@ -259,8 +259,6 @@ VideoInterface_struct *VIDCoreList[] = {
 {
     YabauseDeInit();
     free(videoBuffer);
-    [videoLock release];
-    [super dealloc];
 }
 
 - (void)initYabauseWithCDCore:(int)cdcore
