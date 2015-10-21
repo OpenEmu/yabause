@@ -337,7 +337,7 @@ VideoInterface_struct *VIDCoreList[] = {
 
 - (OEIntSize)bufferSize
 {
-    return OEIntSizeMake(width, height);
+    return OEIntSizeMake(HIRES_WIDTH, HIRES_HEIGHT);
 }
 
 - (OEIntRect)screenRect
@@ -540,10 +540,12 @@ void YuiErrorMsg(const char *string)
     DLog(@"Yabause Error %@", [NSString stringWithUTF8String:string]);
 }
 
-void YuiSwapBuffers(void) 
+void YuiSwapBuffers(void)
 {
     updateCurrentResolution();
-    memcpy(videoBuffer, dispbuffer, sizeof(u32) * width * height);
+    for (int i = 0; i < height; i++) {
+        memcpy(videoBuffer + i*HIRES_WIDTH, dispbuffer + i*width, sizeof(u32) * width);
+    }
 }
 
 #pragma mark -
