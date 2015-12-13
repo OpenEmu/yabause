@@ -358,29 +358,25 @@ VideoInterface_struct *VIDCoreList[] = {
 }
 
 // Save State is broken, fail more often than not
-- (BOOL)saveStateToFileAtPath: (NSString *) fileName
+#if 0
+- (void)saveStateToFileAtPath:(NSString *)fileName completionHandler:(void(^)(BOOL success, NSError *error))block
 {
-//    ScspMuteAudio(SCSP_MUTE_SYSTEM);
-//    int error = YabSaveState([fileName UTF8String]);
-//    ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
-//    
-//    if (!error)
-//        return YES;
-//    
-    return NO;
+    ScspMuteAudio(SCSP_MUTE_SYSTEM);
+    int error = YabSaveState([fileName UTF8String]);
+    ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
+
+    block(!error, nil);
 }
 
-- (BOOL)loadStateFromFileAtPath: (NSString *) fileName
+- (void)loadStateFromFileAtPath:(NSString *)fileName completionHandler:(void(^)(BOOL success, NSError *error))block
 {
-//    ScspMuteAudio(SCSP_MUTE_SYSTEM);
-//    int error = YabLoadState([fileName UTF8String]);
-//    ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
-//    
-//    if (!error)
-//        return YES;
-//    
-    return NO;
+    ScspMuteAudio(SCSP_MUTE_SYSTEM);
+    int error = YabLoadState([fileName UTF8String]);
+    ScspUnMuteAudio(SCSP_MUTE_SYSTEM);
+
+    block(!error, nil);
 }
+#endif
 
 #pragma mark -
 #pragma mark Inputs
