@@ -469,10 +469,10 @@ VideoInterface_struct *VIDCoreList[] = {
             PerPadXReleased(c);
             break;
         case OESaturnButtonY:
-            PerPadYPressed(c);
+            PerPadYReleased(c);
             break;
         case OESaturnButtonZ:
-            PerPadZPressed(c);
+            PerPadZReleased(c);
             break;
         default:
             break;
